@@ -30,6 +30,7 @@ let s:old_cursor_position = []
 let s:cursor_moved = 0
 let s:moved_vertically_in_insert_mode = 0
 let s:previous_num_chars_on_current_line = -1
+let s:accept_first = 0
 
 function! youcompleteme#Enable()
   " When vim is in diff mode, don't run
@@ -111,6 +112,11 @@ function! s:SetUpKeyMappings()
     " This selects the previous candidate for shift-tab (default)
     exe 'inoremap <expr>' . key .
           \ ' pumvisible() ? "\<C-p>" : "\' . key .'"'
+  endfor
+
+  for key in g:ycm_key_accept_first_completion
+    exe 'inoremap <expr>' . key .
+          \ ' pumvisible() ? YcmAcceptFirst() : "\' . key '"'
   endfor
 
   if strlen(g:ycm_key_invoke_completion)
@@ -371,6 +377,12 @@ function! s:InvokeCompletion()
     return
   endif
 
+  " If we're accepting the first complete, exit early
+  if s:accept_first
+    let s:accept_first = 0
+    return
+  endif
+
   " <c-x><c-u> invokes the user's completion function (which we have set to
   " youcompleteme#Complete), and <c-p> tells Vim to select the previous
   " completion candidate. This is necessary because by default, Vim selects the
@@ -404,6 +416,12 @@ function! s:CompletionsForQuery( query, use_filetype_completer )
   let l:results = pyeval( 'completer.CandidatesFromStoredRequest()' )
   let s:searched_and_results_found = len( l:results ) != 0
   return { 'words' : l:results, 'refresh' : 'always' }
+endfunction
+
+
+function! YcmAcceptFirst()
+  let s:accept_first = 1
+  return "\<C-n>\<C-y>"
 endfunction
 
 
