@@ -607,6 +607,19 @@ Default: `['<S-TAB>', '<Up>']`
 
     let g:ycm_key_list_previous_completion = ['<S-TAB>', '<Up>']
 
+### The `g:ycm_key_list_first_completion` option
+
+This option controls the key mappings used to select and accept the first
+string.
+
+Some users may prefer adding `<Enter>` to this list rather than
+g:ycm_key_list_select_completion , since they can then press enter immediately
+afterwards to add a newline.
+
+Default: `[]`
+
+    let g:ycm_key_list_first_completion = []
+
 ### The `g:ycm_key_invoke_completion` option
 
 This option controls the key mapping used to invoke the completion menu for

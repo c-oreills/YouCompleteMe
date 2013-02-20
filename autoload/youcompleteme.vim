@@ -113,6 +113,13 @@ function! s:SetUpKeyMappings()
           \ ' pumvisible() ? "\<C-p>" : "\' . key .'"'
   endfor
 
+
+  for key in g:ycm_key_list_first_completion
+    " Select and accept the first candidate in the completion window
+    exe 'inoremap <expr>' . key .
+          \ ' pumvisible() ? "\<C-n>\<C-y>" : "\' . key .'"'
+  endfor
+
   if strlen(g:ycm_key_invoke_completion)
     " <c-x><c-o> trigger omni completion, <c-p> deselects the first completion
     " candidate that vim selects by default
